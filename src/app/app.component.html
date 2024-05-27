@@ -1,0 +1,76 @@
+@if(localVar) { } @else {
+
+<form [formGroup]="userProfileForm">
+  <div class="not">
+    <div
+      class="JoinUS"
+      style="
+        background: gray;
+        margin: 22px;
+        padding-top: -102px;
+        padding-bottom: -10px;
+        padding-bottom: -17px;
+        border-radius: 52px;
+        padding-right: 145px;
+        padding-left: 145px;
+      "
+    >
+      <h1>Join Our Page</h1>
+      <div class="login">
+        <input
+          type="text"
+          formControlName="name"
+          placeholder="Enter Your Name Here"
+          required
+        />
+        <br />
+        <input
+          type="password"
+          formControlName="password"
+          placeholder="Enter Your Password Here"
+          required
+        />
+        <br />
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="Enter Your Email Here"
+          required
+        />
+        <br />
+        <div class="hero">
+          <label for="input-file" id="drop-area">
+            <input
+              type="file"
+              accept="image/*"
+              id="input-file"
+              class="input-file"
+              #hello
+              hidden
+            />
+            <div id="img-view">
+              <img src="../assets/images/508-icon.png" />
+              <p>
+                Drag and Drop or Click here <br />
+                to upload image
+              </p>
+              <span>upload any images from desktop</span>
+            </div>
+          </label>
+        </div>
+        @if(loader) {
+        <div class="progress"></div>
+
+        }
+        <button
+          type="button"
+          class="join-btn"
+          (click)="onSubmit(); loader = true"
+        >
+          Click Me Join!!
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+}
