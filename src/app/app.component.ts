@@ -66,7 +66,6 @@ export class AppComponent implements OnInit {
         name: this.userProfileForm.value.name,
         email: this.userProfileForm.value.email,
         password: this.userProfileForm.value.password,
-        image: URL.createObjectURL(this.imageUrL),
       };
 
       console.log(data);
