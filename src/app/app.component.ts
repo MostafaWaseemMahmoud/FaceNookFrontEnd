@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
   localVar = window.localStorage.getItem('logedin');
   UserData: any;
   loader: any;
-  baseApi = 'http://localhost:3000';
+  baseApi = 'https://facenook-application-backend.vercel.app';
   imageUrL: any;
   profileImageUrl: any;
   profileEmail: any;
