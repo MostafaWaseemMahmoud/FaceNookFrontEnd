@@ -6,12 +6,14 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { RouterOutlet } from '@angular/router';
+import { enableDebugTools } from '@angular/platform-browser';
+import { RouterOutlet, RouterModule, Routes } from '@angular/router';
+import { windowTime } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HttpClientModule, ReactiveFormsModule],
+  imports: [RouterOutlet, HttpClientModule, ReactiveFormsModule, RouterModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'], // corrected this line
 })
@@ -22,16 +24,27 @@ export class AppComponent implements OnInit {
   islogin: boolean = false;
   posts: any[] = ['Mostafa'];
   userProfileForm: any;
+  postForm: any;
   localVar = window.localStorage.getItem('logedin');
   UserData: any;
   loader: any;
   baseApi = 'http://localhost:3000';
   imageUrL: any;
-
+  profileImageUrl: any;
+  profileEmail: any;
+  profileName: any;
+  AllPosts: any;
   ngOnInit(): void {
+    this.showAllPosts();
     if (window.localStorage.getItem('logedin')) {
       this.islogin = true; // corrected this line
       console.log(this.islogin);
+      this.profileImageUrl = window.localStorage.getItem('image');
+      this.profileEmail = window.localStorage.getItem('email');
+      this.profileName = window.localStorage.getItem('name');
+      if (this.profileImageUrl) {
+        window.prompt('We Have Error');
+      }
     } else {
       this.islogin = false; // corrected this line
       console.log(this.islogin);
@@ -40,6 +53,9 @@ export class AppComponent implements OnInit {
       name: ['', Validators.required],
       password: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
+    });
+    this.postForm = this.fb.group({
+      content: ['', Validators.required],
     });
   }
 
@@ -50,8 +66,47 @@ export class AppComponent implements OnInit {
   ) {}
 
   @ViewChild('hello', { static: false }) divHello: ElementRef | undefined;
+
+  addPost(data: any) {
+    return this.http.post(`${this.baseApi}/api/post`, data);
+  }
+
   postData(data: any) {
     return this.http.post(`${this.baseApi}/api/adduser`, data);
+  }
+
+  sharePost() {
+    const data = {
+      post: this.postForm.value.content,
+      image: this.profileImageUrl,
+      name: this.profileEmail,
+    };
+
+    this.addPost(data).subscribe(
+      (response) => {
+        console.log(response);
+      },
+      (reject) => {
+        console.log(reject);
+      }
+    );
+  }
+
+  getAllPosts() {
+    return this.http.get(`${this.baseApi}/api/Allposts`);
+  }
+
+  showAllPosts() {
+    this.getAllPosts().subscribe(
+      (response) => {
+        console.log(response);
+        this.AllPosts = response;
+      },
+
+      (reject) => {
+        console.log(reject);
+      }
+    );
   }
 
   onSubmit(): void {
@@ -89,6 +144,7 @@ export class AppComponent implements OnInit {
         this.loader = window.localStorage.removeItem('loading');
         console.log(this.userProfileForm.value);
         window.localStorage.setItem('logedin', 'true');
+        window.location.reload();
         this.loader = false;
       }, 3000);
     } else {

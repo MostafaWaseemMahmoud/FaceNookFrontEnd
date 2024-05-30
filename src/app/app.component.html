@@ -1,4 +1,58 @@
-@if(localVar) { } @else {
+@if(localVar) {
+<header>
+  <div class="logo">
+    <h2>FaceNook</h2>
+  </div>
+  <nav>
+    <ul>
+      <li>Home</li>
+      <li>Posts</li>
+      <li>AddPost</li>
+    </ul>
+  </nav>
+  <div class="account-display">
+    <img [src]="profileImageUrl" />
+    <h5 class="profile-name">{{ profileEmail }}</h5>
+  </div>
+</header>
+<main>
+  <div class="home">
+    <div class="card">
+      <h1>FaceNook Applicatoin</h1>
+      <p>
+        Hello {{ profileName }} At FaceNook Applicatoin <br />
+        Are A Online Community
+      </p>
+    </div>
+  </div>
+
+  <div class="addposts">
+    <form [formGroup]="postForm">
+      <h1>ADD Posts</h1>
+      <input formControlName="content" type="text" placeholder="Post Content" />
+      <button class="post-btn" (click)="sharePost()">Share Post</button>
+    </form>
+  </div>
+
+  <div class="all-posts">
+    <h1>All Posts</h1>
+    @for (post of AllPosts; track $index) {
+    <div class="post">
+      <div class="post-content">
+        <div class="posthead">
+          <img [src]="post.image" alt="" />
+          <h1>{{ post.name }}</h1>
+        </div>
+        <div class="post-body">
+          <h1>{{ post.post }}</h1>
+        </div>
+      </div>
+    </div>
+
+    }
+  </div>
+</main>
+} @else {
 
 <form [formGroup]="userProfileForm">
   <div class="not">
@@ -38,26 +92,6 @@
           required
         />
         <br />
-        <div class="hero">
-          <label for="input-file" id="drop-area">
-            <input
-              type="file"
-              accept="image/*"
-              id="input-file"
-              class="input-file"
-              #hello
-              hidden
-            />
-            <div id="img-view">
-              <img src="../assets/images/508-icon.png" />
-              <p>
-                Drag and Drop or Click here <br />
-                to upload image
-              </p>
-              <span>upload any images from desktop</span>
-            </div>
-          </label>
-        </div>
         @if(loader) {
         <div class="progress"></div>
 
